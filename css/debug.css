@@ -1,0 +1,14 @@
+#debug {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  background-color: #000;
+  color: #DDD;
+  font: 400 12pt 'Lucida Console', monospace;
+  padding: 8px;
+
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  gap: 4px;
+}

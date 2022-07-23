@@ -1,0 +1,36 @@
+:root {
+  color-scheme: dark;
+
+  --theme-body-bg: #262626;
+  --theme-body-fg: #D8DEE9;
+  --theme-focused: #ffff87;
+
+  --theme-current-word-fg: #FFF;
+  --theme-current-word-shadow: #000;
+
+  --theme-user-input-bg: #262626;
+  --theme-user-input-fg: #D8DEE9;
+  --theme-user-input-border: #000;
+  --theme-user-input-shadow: #000;
+
+  --theme-key-bg: #313131;
+  --theme-key-fg: #D8DEE9;
+  --theme-key-secondary-fg: #fc1a70;
+
+  --theme-deadkey-pressed-bg: #fc1a70;
+
+  --theme-key-pressed-bg: #a4e400;
+  --theme-key-pressed-fg: #2E3440;
+  --theme-key-pressed-secondary-fg: #2E3440;
+
+  --theme-key-hint-bg: #ffff87;
+  --theme-key-hint-fg: #2E3440;
+  --theme-key-hint-secondary-fg: #2E3440;
+
+  --theme-settings-bg: #262626;
+  --theme-settings-border: #fc1a70;
+  --theme-settings-shadow: #000;
+
+  --theme-settings-close-fg: #ffff87;
+  --theme-settings-close-hover-fg: #fc1a70;
+}

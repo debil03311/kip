@@ -1,0 +1,128 @@
+body {
+  background-color: var(--theme-body-bg);
+  color: var(--theme-body-fg);
+  font: 600 20pt 'Yu Gothic', sans-serif;
+
+  display: grid;
+  place-content: center;
+}
+
+main {
+  gap: 1em;
+  align-items: center;
+}
+
+#upcoming-words {
+  align-items: center;
+  flex-direction: column-reverse !important;
+}
+
+#upcoming-words span:nth-child(2) {
+  font-size: 14pt;
+  opacity: .6;
+}
+
+#upcoming-words span:not(:nth-child(2)) {
+  font-size: 10pt;
+  opacity: .4;
+}
+
+#current-word {
+  text-shadow: 2px 2px 0 var(--theme-current-word-shadow);
+}
+
+body.focused #current-word {
+  color: var(--theme-focused);
+}
+
+#word-input {
+  align-items: center;
+  gap: 1em;
+}
+
+#user-input {
+  background-color: var(--theme-user-input-bg);
+  color: var(--theme-user-input-fg);
+  min-height: 2em;
+  border: solid 1px var(--theme-user-input-border);
+  border-radius: 6px;
+  box-shadow: 2px 2px 0 var(--theme-user-input-shadow);
+  padding: 0 1em;
+}
+
+body.focused #user-input {
+  border-color: var(--theme-focused);
+}
+
+.keyboard {
+  --gap: 4px;
+  gap: var(--gap);
+
+  pointer-events: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}
+
+.kb-row {
+  display: flex;
+  position: relative;
+  flex-flow: row nowrap;
+  gap: var(--gap);
+}
+
+.kb-key {
+  --key-size: 2.2em;
+  --padding: 7px;
+
+  position: relative;
+  width: var(--key-size);
+  height: var(--key-size);
+  background-color: var(--theme-key-bg);
+  color: var(--theme-key-fg);
+  line-height: 1em;
+  border-radius: 6px;
+  transition: 100ms;
+}
+
+.kb-key.hint {
+  background-color: var(--theme-key-hint-bg);
+  color: var(--theme-key-hint-fg);
+}
+
+.kb-key.hint span:nth-child(2) {
+  color: var(--theme-key-hint-secondary-fg) !important;
+}
+
+.kb-key.pressed {
+  background-color: var(--theme-key-pressed-bg);
+  color: var(--theme-key-pressed-fg);
+  transform: scale(.9);
+}
+
+.kb-key.pressed span:nth-child(2) {
+  color: var(--theme-key-pressed-secondary-fg) !important;
+}
+
+.deadkey.pressed {
+  background-color: var(--theme-deadkey-pressed-bg);
+  transform: scale(.9);
+}
+
+.kb-key span {
+  position: absolute;
+}
+
+.kb-key span:nth-child(1) {
+  top: var(--padding);
+  left: var(--padding);
+}
+
+.kb-key span:nth-child(2) {
+  /* bottom: var(--padding); */
+  bottom: 1px;
+  right: var(--padding);
+  color: var(--theme-key-secondary-fg);
+  font-size: .68em;
+  font-weight: 500;
+}

@@ -1,0 +1,20 @@
+#ansi .backspace    { width: calc(var(--key-size) * 2.00) }
+#ansi .tab          { width: calc(var(--key-size) * 1.50) }
+#ansi .backslash    { width: calc(var(--key-size) * 1.50) }
+#ansi .capslock     { width: calc(var(--key-size) * 1.75) }
+
+#ansi .shift-left   { width: calc(var(--key-size) * 2.32) }
+#ansi .shift-right  { width: calc(var(--key-size) * 2.82) }
+
+#ansi .ctrl-left    { width: calc(var(--key-size) * 1.50) }
+#ansi .meta-left    { width: calc(var(--key-size) * 1.25) }
+#ansi .alt-left     { width: calc(var(--key-size) * 1.25) }
+
+#ansi .spacebar     { width: calc(var(--key-size) * 6.16) }
+
+#ansi .alt-right    { width: calc(var(--key-size) * 1.25) }
+#ansi .meta-right   { width: calc(var(--key-size) * 1.25) }
+#ansi .contextmenu  { width: calc(var(--key-size) * 1.25) }
+#ansi .ctrl-right   { width: calc(var(--key-size) * 1.50) }
+
+#ansi .enter        { width: calc(var(--key-size) * 2.32) }

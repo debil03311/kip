@@ -1,0 +1,521 @@
+<!DOCTYPE HTML>
+<html lang="ja"><head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>かな入力練習 Kana Input Practice</title>
+
+  <link rel="stylesheet" href="./css/theme/nord.dark.css" id="theme">
+
+  <link rel="stylesheet" href="./mythril/mythril.css">
+  <link rel="stylesheet" href="./css/setup.css">
+  <link rel="stylesheet" href="./css/index.css">
+  <link rel="stylesheet" href="./css/debug.css">
+  <link rel="stylesheet" href="./css/settings.css">
+  <link rel="stylesheet" href="./css/layout.iso.css">
+  <link rel="stylesheet" href="./css/layout.ansi.css">
+
+  <script src="./mythril/mythril.js" defer></script>
+  <script src="./index.js" defer></script>
+  <script src="https://unpkg.com/alpinejs" defer></script>
+
+</head><body class="focused"
+             x-data="body"
+             @keydown="keyboardHandler(event)"
+             @keyup="unhighlightAllKeys()">
+
+  <div id="settings-cog"
+       class="no-select"
+       @click="showSettings = !showSettings">
+    ⚙️
+  </div>
+
+  <div id="settings-wrapper"
+       class="invisible overlay grid-center"
+       x-bind:class="{ invisible: !showSettings }">
+    <div id="settings" class="flex-column">
+      <h2>設定</h2>
+
+      <article id="set-layout">
+        <span class="label">キーボード配列</span>
+        <select @change="setLayout(event.target.value)">
+          <option value="iso">ISO【一般】</option>
+          <option value="ansi">ANSI</option>
+        </select>
+      </article>
+
+      <article id="set-hint-delay">
+        <span class="label">ヒントが遅れる秒数</span>
+        <input type="text"
+               pattern="[0-9.]"
+               x-model="hintDelay"
+               @change="setHintDelay(event.target.value)">
+      </article>
+
+      <article id="set-theme">
+        <span class="label">配色テーマ</span>
+        <select @change="setTheme(event.target.value)">
+          <option value="nord.dark">【暗】Nord【一般】</option>
+          <option value="nord.light">【明】Nord</option>
+          <option value="postit">【明】Post-it</option>
+          <option value="coffee">【暗】コーヒー</option>
+          <option value="grape">【暗】ぶどう</option>
+          <option value="midnight">【暗】真夜中</option>
+          <option value="neon">【暗】ネオン</option>
+          <option value="monokai">【暗】ものかい</option>
+        </select>
+      </article>
+
+      <span id="settings-close" @click="showSettings = false">
+        閉じる
+      </span>
+    </div>
+  </div>
+
+  <main class="flex-column">
+    <section id="upcoming-words" class="flex-column">
+      <template x-for="word in upcomingWords">
+        <span x-text="word"></span>
+      </template>
+    </section>
+
+    <section id="word-input" class="flex-column">
+      <span id="current-word" x-text="currentWord.join('')"></span>
+
+      <div id="user-input" class="grid-center">
+        <template x-if="userInput.length">
+          <span x-html="userInput.join('')"></span>
+        </template>
+      </div>
+    </section>
+
+    <section id="iso" class="keyboard ansi flex-column"
+             x-show="layout === 'iso'">
+      <div class="kb-row">
+        <div data-code="Backquote" class="kb-key">
+          <span>ろ</span>
+        </div>
+        <div data-code="Digit1" class="kb-key">
+          <span>ぬ</span>
+        </div>
+        <div data-code="Digit2" class="kb-key">
+          <span>ふ</span>
+        </div>
+        <div data-code="Digit3" class="kb-key">
+          <span>あ</span>
+          <span>ぁ</span>
+        </div>
+        <div data-code="Digit4" class="kb-key">
+          <span>う</span>
+          <span>ぅ</span>
+        </div>
+        <div data-code="Digit5" class="kb-key">
+          <span>え</span>
+          <span>ぇ</span>
+        </div>
+        <div data-code="Digit6" class="kb-key">
+          <span>お</span>
+          <span>ぉ</span>
+        </div>
+        <div data-code="Digit7" class="kb-key">
+          <span>や</span>
+          <span>ゃ</span>
+        </div>
+        <div data-code="Digit8" class="kb-key">
+          <span>ゆ</span>
+          <span>ゅ</span>
+        </div>
+        <div data-code="Digit9" class="kb-key">
+          <span>よ</span>
+          <span>ょ</span>
+        </div>
+        <div data-code="Digit0" class="kb-key">
+          <span>わ</span>
+          <span>を</span>
+        </div>
+        <div data-code="Minus" class="kb-key">
+          <span>ほ</span>
+          <span>ー</span>
+        </div>
+        <div data-code="Equal" class="kb-key">
+          <span>へ</span>
+        </div>
+
+        <div data-code="Backspace" class="kb-key backspace deadkey"></div>
+      </div>
+
+      <div class="kb-row">
+        <div data-code="Tab" class="kb-key tab deadkey"></div>
+
+        <div data-code="KeyQ" class="kb-key">
+          <span>た</span>
+        </div>
+        <div data-code="KeyW" class="kb-key">
+          <span>て</span>
+        </div>
+        <div data-code="KeyE" class="kb-key">
+          <span>い</span>
+          <span>ぃ</span>
+        </div>
+        <div data-code="KeyR" class="kb-key">
+          <span>す</span>
+        </div>
+        <div data-code="KeyT" class="kb-key">
+          <span>か</span>
+        </div>
+        <div data-code="KeyY" class="kb-key">
+          <span>ん</span>
+        </div>
+        <div data-code="KeyU" class="kb-key">
+          <span>な</span>
+        </div>
+        <div data-code="KeyI" class="kb-key">
+          <span>に</span>
+        </div>
+        <div data-code="KeyO" class="kb-key">
+          <span>ら</span>
+        </div>
+        <div data-code="KeyP" class="kb-key">
+          <span>せ</span>
+        </div>
+        <div data-code="BracketLeft" class="kb-key dakuten">
+          <span>゛</span>
+          <span>「</span>
+        </div>
+        <div data-code="BracketRight" class="kb-key dakuten">
+          <span>゜</span>
+          <span>」</span>
+        </div>
+
+        <div data-code="Enter" class="kb-key enter-top deadkey"></div>
+      </div>
+
+      <div class="kb-row">
+        <div data-code="CapsLock" class="kb-key capslock deadkey"></div>
+
+        <div data-code="KeyA" class="kb-key">
+          <span>ち</span>
+        </div>
+        <div data-code="KeyS" class="kb-key">
+          <span>と</span>
+        </div>
+        <div data-code="KeyD" class="kb-key">
+          <span>し</span>
+        </div>
+        <div data-code="KeyF" class="kb-key">
+          <span>は</span>
+        </div>
+        <div data-code="KeyG" class="kb-key">
+          <span>き</span>
+        </div>
+        <div data-code="KeyH" class="kb-key">
+          <span>く</span>
+        </div>
+        <div data-code="KeyJ" class="kb-key">
+          <span>ま</span>
+        </div>
+        <div data-code="KeyK" class="kb-key">
+          <span>の</span>
+        </div>
+        <div data-code="KeyL" class="kb-key">
+          <span>り</span>
+        </div>
+        <div data-code="Semicolon" class="kb-key">
+          <span>れ</span>
+        </div>
+        <div data-code="Quote" class="kb-key">
+          <span>け</span>
+        </div>
+        <div data-code="Backslash" class="kb-key">
+          <span>む</span>
+        </div>
+
+        <div data-code="Enter" class="kb-key enter-bottom deadkey"></div>
+        <div data-code="Enter" class="kb-key enter-middle deadkey"></div>
+      </div>
+
+      <div class="kb-row">
+        <div data-code="ShiftLeft" class="kb-key shift-left deadkey"></div>
+
+        <div data-code="IntlBackslash" class="kb-key">
+          <span>む</span>
+        </div>
+        <div data-code="KeyZ" class="kb-key">
+          <span>つ</span>
+          <span>っ</span>
+        </div>
+        <div data-code="KeyX" class="kb-key">
+          <span>さ</span>
+        </div>
+        <div data-code="KeyC" class="kb-key">
+          <span>そ</span>
+        </div>
+        <div data-code="KeyV" class="kb-key">
+          <span>ひ</span>
+        </div>
+        <div data-code="KeyB" class="kb-key">
+          <span>こ</span>
+        </div>
+        <div data-code="KeyN" class="kb-key">
+          <span>み</span>
+        </div>
+        <div data-code="KeyM" class="kb-key">
+          <span>も</span>
+        </div>
+        <div data-code="Comma" class="kb-key">
+          <span>ね</span>
+          <span>、</span>
+        </div>
+        <div data-code="Period" class="kb-key">
+          <span>る</span>
+          <span>。</span>
+        </div>
+        <div data-code="Slash" class="kb-key">
+          <span>め</span>
+          <span>・</span>
+        </div>
+
+        <div data-code="ShiftRight" class="kb-key shift-right deadkey"></div>
+      </div>
+
+      <div class="kb-row">
+        <div data-code="ControlLeft" class="kb-key ctrl-left deadkey"></div>
+        <div data-code="MetaLeft" class="kb-key meta-left deadkey"></div>
+        <div data-code="AltLeft" class="kb-key alt-left deadkey"></div>
+        <div data-code="Space" class="kb-key spacebar deadkey"></div>
+        <div data-code="AltRight" class="kb-key alt-right deadkey"></div>
+        <div data-code="MetaRight" class="kb-key meta-right deadkey"></div>
+        <div data-code="ContextMenu" class="kb-key contextmenu deadkey"></div>
+        <div data-code="ControlRight" class="kb-key ctrl-right deadkey"></div>
+      </div>
+    </section>
+
+    <section id="ansi" class="keyboard ansi flex-column"
+             x-show="layout === 'ansi'">
+      <div class="kb-row">
+        <div data-code="Backquote" class="kb-key">
+          <span>ろ</span>
+        </div>
+        <div data-code="Digit1" class="kb-key">
+          <span>ぬ</span>
+        </div>
+        <div data-code="Digit2" class="kb-key">
+          <span>ふ</span>
+        </div>
+        <div data-code="Digit3" class="kb-key">
+          <span>あ</span>
+          <span>ぁ</span>
+        </div>
+        <div data-code="Digit4" class="kb-key">
+          <span>う</span>
+          <span>ぅ</span>
+        </div>
+        <div data-code="Digit5" class="kb-key">
+          <span>え</span>
+          <span>ぇ</span>
+        </div>
+        <div data-code="Digit6" class="kb-key">
+          <span>お</span>
+          <span>ぉ</span>
+        </div>
+        <div data-code="Digit7" class="kb-key">
+          <span>や</span>
+          <span>ゃ</span>
+        </div>
+        <div data-code="Digit8" class="kb-key">
+          <span>ゆ</span>
+          <span>ゅ</span>
+        </div>
+        <div data-code="Digit9" class="kb-key">
+          <span>よ</span>
+          <span>ょ</span>
+        </div>
+        <div data-code="Digit0" class="kb-key">
+          <span>わ</span>
+          <span>を</span>
+        </div>
+        <div data-code="Minus" class="kb-key">
+          <span>ほ</span>
+          <span>ー</span>
+        </div>
+        <div data-code="Equal" class="kb-key">
+          <span>へ</span>
+        </div>
+
+        <div data-code="Backspace" class="kb-key backspace deadkey"></div>
+      </div>
+
+      <div class="kb-row">
+        <div data-code="Tab" class="kb-key tab deadkey"></div>
+
+        <div data-code="KeyQ" class="kb-key">
+          <span>た</span>
+        </div>
+        <div data-code="KeyW" class="kb-key">
+          <span>て</span>
+        </div>
+        <div data-code="KeyE" class="kb-key">
+          <span>い</span>
+          <span>ぃ</span>
+        </div>
+        <div data-code="KeyR" class="kb-key">
+          <span>す</span>
+        </div>
+        <div data-code="KeyT" class="kb-key">
+          <span>か</span>
+        </div>
+        <div data-code="KeyY" class="kb-key">
+          <span>ん</span>
+        </div>
+        <div data-code="KeyU" class="kb-key">
+          <span>な</span>
+        </div>
+        <div data-code="KeyI" class="kb-key">
+          <span>に</span>
+        </div>
+        <div data-code="KeyO" class="kb-key">
+          <span>ら</span>
+        </div>
+        <div data-code="KeyP" class="kb-key">
+          <span>せ</span>
+        </div>
+        <div data-code="BracketLeft" class="kb-key dakuten">
+          <span>゛</span>
+          <span>「</span>
+        </div>
+        <div data-code="BracketRight" class="kb-key dakuten">
+          <span>゜</span>
+          <span>」</span>
+        </div>
+        <div data-code="Backslash" class="kb-key backslash">
+          <span>む</span>
+        </div>
+      </div>
+
+      <div class="kb-row">
+        <div data-code="CapsLock" class="kb-key capslock deadkey"></div>
+
+        <div data-code="KeyA" class="kb-key">
+          <span>ち</span>
+        </div>
+        <div data-code="KeyS" class="kb-key">
+          <span>と</span>
+        </div>
+        <div data-code="KeyD" class="kb-key">
+          <span>し</span>
+        </div>
+        <div data-code="KeyF" class="kb-key">
+          <span>は</span>
+        </div>
+        <div data-code="KeyG" class="kb-key">
+          <span>き</span>
+        </div>
+        <div data-code="KeyH" class="kb-key">
+          <span>く</span>
+        </div>
+        <div data-code="KeyJ" class="kb-key">
+          <span>ま</span>
+        </div>
+        <div data-code="KeyK" class="kb-key">
+          <span>の</span>
+        </div>
+        <div data-code="KeyL" class="kb-key">
+          <span>り</span>
+        </div>
+        <div data-code="Semicolon" class="kb-key">
+          <span>れ</span>
+        </div>
+        <div data-code="Quote" class="kb-key">
+          <span>け</span>
+        </div>
+
+        <div data-code="Enter" class="kb-key enter deadkey"></div>
+      </div>
+
+      <div class="kb-row">
+        <div data-code="ShiftLeft" class="kb-key shift-left deadkey"></div>
+
+        <div data-code="KeyZ" class="kb-key">
+          <span>つ</span>
+          <span>っ</span>
+        </div>
+        <div data-code="KeyX" class="kb-key">
+          <span>さ</span>
+        </div>
+        <div data-code="KeyC" class="kb-key">
+          <span>そ</span>
+        </div>
+        <div data-code="KeyV" class="kb-key">
+          <span>ひ</span>
+        </div>
+        <div data-code="KeyB" class="kb-key">
+          <span>こ</span>
+        </div>
+        <div data-code="KeyN" class="kb-key">
+          <span>み</span>
+        </div>
+        <div data-code="KeyM" class="kb-key">
+          <span>も</span>
+        </div>
+        <div data-code="Comma" class="kb-key">
+          <span>ね</span>
+          <span>、</span>
+        </div>
+        <div data-code="Period" class="kb-key">
+          <span>る</span>
+          <span>。</span>
+        </div>
+        <div data-code="Slash" class="kb-key">
+          <span>め</span>
+          <span>・</span>
+        </div>
+
+        <div data-code="ShiftRight" class="kb-key shift-right deadkey"></div>
+      </div>
+
+      <div class="kb-row">
+        <div data-code="ControlLeft" class="kb-key ctrl-left deadkey"></div>
+        <div data-code="MetaLeft" class="kb-key meta-left deadkey"></div>
+        <div data-code="AltLeft" class="kb-key alt-left deadkey"></div>
+        <div data-code="Space" class="kb-key spacebar deadkey"></div>
+        <div data-code="AltRight" class="kb-key alt-right deadkey"></div>
+        <div data-code="MetaRight" class="kb-key meta-right deadkey"></div>
+        <div data-code="ContextMenu" class="kb-key contextmenu deadkey"></div>
+        <div data-code="ControlRight" class="kb-key ctrl-right deadkey"></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="debug"
+       class="flex-column"
+       style="display: none"
+       x-show="showDebug">
+
+    showDebug
+    <span x-text="showDebug"></span>
+
+    showSettings
+    <span x-text="showSettings"></span>
+
+    wordCount
+    <span x-text="wordCount"></span>
+
+    upcomingWords
+    <span x-text="JSON.stringify(upcomingWords)"></span>
+
+    currentWord
+    <span x-text="JSON.stringify(currentWord)"></span>
+
+    currentWord.length
+    <span x-text="JSON.stringify(currentWord.length)"></span>
+
+    userInput
+    <span x-text="JSON.stringify(userInput)"></span>
+
+    userInput.length
+    <span x-text="userInput.length"></span>
+  </div>
+
+</body></html>

@@ -1,0 +1,29 @@
+#iso .backspace    { width: calc(var(--key-size) * 2.00) }
+#iso .tab          { width: calc(var(--key-size) * 1.50) }
+#iso .capslock     { width: calc(var(--key-size) * 1.75) }
+
+#iso .shift-left   { width: calc(var(--key-size) * 1.25) }
+#iso .shift-right  { width: calc(var(--key-size) * 2.82) }
+
+#iso .ctrl-left    { width: calc(var(--key-size) * 1.50) }
+#iso .meta-left    { width: calc(var(--key-size) * 1.25) }
+#iso .alt-left     { width: calc(var(--key-size) * 1.25) }
+
+#iso .spacebar     { width: calc(var(--key-size) * 6.16) }
+
+#iso .alt-right    { width: calc(var(--key-size) * 1.25) }
+#iso .meta-right   { width: calc(var(--key-size) * 1.25) }
+#iso .contextmenu  { width: calc(var(--key-size) * 1.25) }
+#iso .ctrl-right   { width: calc(var(--key-size) * 1.50) }
+
+
+#iso .enter-top    { width: calc(var(--key-size) * 1.50) }
+#iso .enter-bottom { width: calc(var(--key-size) * 1.25) }
+
+#iso .enter-middle {
+  position: absolute;
+  top: -16px;
+  right: 0;
+  width: calc(var(--key-size) * 1.25);
+  border-radius: 0;
+}
