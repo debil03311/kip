@@ -1,5 +1,6 @@
 // Constants
 
+// const KANA_API_ENDPOINT = 'https://randomkana.herokuapp.com';
 const KANA_API_ENDPOINT = 'https://crosscloak.herokuapp.com/https://randomkana.herokuapp.com';
 const MAX_WORDS = 3;
 
