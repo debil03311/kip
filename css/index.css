@@ -1,10 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap');
+
 body {
   background-color: var(--theme-body-bg);
   color: var(--theme-body-fg);
-  font: 600 20pt 'Yu Gothic', sans-serif;
+  font: 600 20pt 'Zen Kaku Gothic New', 'Yu Gothic', 'UD Digi Kyokasho N-R', sans-serif;
 
   display: grid;
   place-content: center;
+}
+
+a {
+  text-decoration: none;
+  font-weight: 800;
+}
+
+a:hover {
+  text-decoration: underline;
 }
 
 main {
