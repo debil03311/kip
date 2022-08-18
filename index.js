@@ -8,8 +8,13 @@ const THEME_PATH = './css/theme';
 const DEFAULT_LAYOUT = 'iso';
 const DEFAULT_THEME = 'nord.dark';
 
+const FIREFOX_FUNCTION_KEYS = ['Quote', 'Slash'];
+
 // HTML keyboard key elements
 const domKeys = [...document.querySelectorAll('.kb-key')];
+
+const userAgent = navigator.userAgent.toUpperCase();
+const isFirefox = userAgent.includes('MOZILLA') || userAgent.includes('FIREFOX');
 
 const e_theme = document.getElementById('theme');
 const e_layoutSelector = document.querySelector('#set-layout select');
@@ -279,6 +284,9 @@ document.addEventListener('alpine:init', ()=> {
         event.preventDefault();
         return this.showDebug = !this.showDebug;
       }
+
+      if (isFirefox && FIREFOX_FUNCTION_KEYS.includes(event.code))
+        event.preventDefault();
 
       // Don't do anything for "dead" keys
       if (isDeadKey) {
