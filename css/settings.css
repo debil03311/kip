@@ -3,10 +3,9 @@
   top: 0;
   right: 0;
   text-shadow:
-    0 0 4px #000,
     0 0 8px #000;
 
-  opacity: .2;
+  opacity: .4;
   padding: 1em;
   cursor: pointer;
   transition: 400ms;
